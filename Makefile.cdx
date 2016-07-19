@@ -19,6 +19,8 @@ package : build
 clean :
 	rm -rf build.cdx
 	make -C proxygen clean
+	rm proxygen/Makefile
+	@echo "consider git -xn clean followeb y git -xf clean"
 
 build : proxygen/Makefile
 	cd proxygen; make -j4
@@ -63,13 +65,4 @@ docker-bash:
 
 # ================
 #
-
-.PHONY : clean $(CLEAN_MODULES)
-$(CLEAN_MODULES) : clean/% : %
-	cd $*; git clean -xdf
-	cd $*; git checkout -- .
-
-clean : $(CLEAN_MODULES)
-	@rm -rf build
-	@rm -f cdx*.deb
 
