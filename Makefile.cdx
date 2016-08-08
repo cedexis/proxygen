@@ -9,10 +9,10 @@ package : build
 	DESTDIR=`pwd`/build.cdx/install make -C proxygen install
 	cd build.cdx; fpm -f -C install -n cdx-proxygen \
 		--deb-no-default-config-files \
-		--version 1.4.0 \
+		--version 1.4.1 \
 		--description "Git Commit: $(GIT_HASH)" \
-		-d 'cdx-folly = 1.4.0' \
-		-d 'cdx-wangle = 1.4.0' \
+		-d 'cdx-folly = 1.4.1' \
+		-d 'cdx-wangle = 1.4.1' \
 		-s dir -t deb usr
 
 .PHONY: clean
