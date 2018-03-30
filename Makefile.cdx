@@ -1,0 +1,29 @@
+DIR=/vagrant/proxygen
+LABEL=cdx-proxygen
+
+default : package
+
+package : GIT_HASH := $(shell git rev-parse HEAD)
+package : build
+	mkdir -p build.cdx/install
+	DESTDIR=`pwd`/build.cdx/install make -C proxygen install
+	cd build.cdx; fpm -f -C install -n cdx-proxygen \
+		--deb-no-default-config-files \
+		--version 1.6.0 \
+		--description "Git Commit: $(GIT_HASH)" \
+		-d 'cdx-folly = 1.6.0' \
+		-d 'cdx-wangle = 1.6.0' \
+		-s dir -t deb usr
+
+.PHONY: clean
+clean :
+	rm -rf build.cdx
+	make -C proxygen clean
+
+build : proxygen/Makefile
+	cd proxygen; make -j4
+
+proxygen/Makefile: proxygen/VERSION
+	  cd proxygen; autoreconf -ivf
+		cd proxygen; ./configure
+
